@@ -10,3 +10,6 @@ django = "~=4.0"
 
 [requires]
 python_version = "3.9"
+
+[scripts]
+serve="python manage.py runserver"
