@@ -124,5 +124,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "clashers_gg.User"
-LOGOUT_REDIRECT_URL = "/"   # TODO: #2
+LOGOUT_REDIRECT_URL = "/"   # TODO: #14
 LOGIN_REDIRECT_URL = "/"
