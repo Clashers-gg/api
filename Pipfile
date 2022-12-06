@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 django = "~=4.0"
 mysqlclient = "*"
+django-cors-headers = "*"
+requests = "*"
 
 [dev-packages]
 
