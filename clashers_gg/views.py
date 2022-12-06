@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.db.models import Q
 from .forms import SignUpForm
 import requests  
-from .models import Friendship, User
+from .models import Friendship, User, Message
 from datetime import datetime
 
 def home(request):
@@ -90,6 +90,43 @@ def display_friends(incoming_req):
         friend_pairs = [[x.friend1.riot_id, x.friend2.riot_id] for x in all_entries]
         friends = list(filter(lambda x: x != requesting_user.riot_id , list(set([x for l in friend_pairs for x in l]))))
         return JsonResponse(friends, safe=False)
+
+@login_required
+def show_messages(incoming_req):
+    req_user = incoming_req.user
+    if incoming_req.method == "GET":
+        friend = incoming_req.GET.get("friend")
+
+        # convert friend2 string to user
+        try:
+            other_user = User.objects.get(riot_id=friend)
+        except:
+            return HttpResponseBadRequest("That Player Doesn't Have An Account On Clashers")
+
+        messages = Message.objects.select_related().filter(
+            (Q(friend1=req_user) & Q(friend2=other_user)) |
+            (Q(friend1=other_user) & Q(friend2=req_user))
+        ).values("send_time", "message_text", "friend1__riot_id", "friend2__riot_id")
+
+        return JsonResponse(list(messages), safe=False)
+
+@login_required
+def send_message(incoming_req):
+    req_user = incoming_req.user
+    if incoming_req.method == "POST":
+        friend = incoming_req.POST.get("friend")
+        message_text = incoming_req.POST.get("message_text")
+
+        # convert friend2 string to user
+        try:
+            other_user = User.objects.get(riot_id=friend)
+        except:
+            return HttpResponseBadRequest("That Player Doesn't Have An Account On Clashers")
+
+        new_message = Message(friend1=req_user, friend2=other_user, message_text=message_text, send_time=datetime.now())
+        new_message.save()
+
+        return HttpResponse("Message sent successfully")
 
 @login_required
 def accept_friend_request(incoming_req) :

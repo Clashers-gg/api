@@ -29,6 +29,8 @@ urlpatterns = [
     path("get_player_info/", views.get_player_info, name="get_player_info"),
     path("get_pending_friends/", views.get_pending_friends, name="get_pending_friends"),
     path("display_friends/", views.display_friends, name="display_friends"),
+    path("show_messages/", views.show_messages, name="show_messages"),
+    path("send_message/", views.send_message, name="send_message"),
     path("deny_friend_request/", views.deny_friend_request, name="deny_friend_request"),
     path("accept_friend_request/", views.accept_friend_request, name="accept_friend_request"),
 ]
