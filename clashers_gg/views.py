@@ -19,6 +19,10 @@ class SignUp(CreateView):
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
+# ------------------------------------------------------
+api_key = "RGAPI-348369a6-26be-4fdc-99e0-7d763d38fc8a"
+# ------------------------------------------------------
+
 def friend_finder(incoming_req):
     if incoming_req.method == "GET":
         player_name = incoming_req.GET.get("player_name")
@@ -180,3 +184,7 @@ def deny_friend_request(incoming_req) :
             return HttpResponseBadRequest("There was a problem deleting the friend request")
 
         return HttpResponse("Friend Request Denied")
+
+@login_required
+def whoami(incoming_req):
+    return HttpResponse(incoming_req.user.riot_id)

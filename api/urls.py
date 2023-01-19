@@ -33,4 +33,5 @@ urlpatterns = [
     path("send_message/", views.send_message, name="send_message"),
     path("deny_friend_request/", views.deny_friend_request, name="deny_friend_request"),
     path("accept_friend_request/", views.accept_friend_request, name="accept_friend_request"),
+    path("whoami", views.whoami, name="whoami"),
 ]
